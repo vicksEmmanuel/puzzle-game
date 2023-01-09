@@ -1,0 +1,13 @@
+.button {
+  @apply disabled:cursor-not-allowed disabled:opacity-[0.4] relative w-[40px] h-[40px] flex justify-center items-center rounded-full border-[2px] transition-all duration-200 hover:scale-[1.2];
+
+  .text {
+    @apply hidden text-xs italic text-neutral-raven;
+  }
+
+  &:hover {
+    .text {
+      @apply inline-block;
+    }
+  }
+}

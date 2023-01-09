@@ -1,0 +1,206 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/poppins/Poppins-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/poppins/Poppins-Italic.woff2') format('woff2');
+    font-weight: 400;
+    font-display: swap;
+    font-style: italic;
+  }
+
+  @font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/poppins/Poppins-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+    font-style: normal;
+  }
+
+  @font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/poppins/Poppins-Bold-Italic.woff2') format('woff2');
+    font-weight: 700;
+    font-display: swap;
+    font-style: italic;
+  }
+}
+
+@layer base {
+  html,
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  body {
+    @apply bg-neutral-pearl !important;
+  }
+
+  * {
+    @apply font-poppins;
+  }
+
+  input::placeholder,
+  textarea::placeholder,
+  .custom-placeholder {
+    @apply text-base font-normal text-neutral-light-silver;
+  }
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+  body {
+    color: white;
+    background: white;
+  }
+}
+
+@layer components {
+  .image-container {
+    > span {
+      position: unset !important;
+      width: 100% !important;
+      height: inherit !important;
+    }
+
+    .image {
+      /* object-fit: scale-down; */
+      width: 100% !important;
+      position: relative !important;
+      height: inherit !important;
+    }
+
+    > div {
+      /* position: unset; */
+    }
+  }
+
+  .type-writer-container {
+    height: 50px;
+  }
+
+  .section-card {
+  }
+
+  .slick-list {
+    overflow: none !important;
+  }
+
+  .stats-section {
+    /* svg {
+      width: 10px;
+      height: 10px;
+    } */
+  }
+
+  li.navlink:not(.active) {
+    > .pseudo-dot {
+      @apply transition-all duration-200 left-[-3px];
+      opacity: 0;
+    }
+    &:hover {
+      > .pseudo-dot {
+        @apply left-[-10px];
+        opacity: 1;
+      }
+    }
+  }
+}
+
+li.navlink.active {
+  > .pseudo-dot {
+    @apply left-[-10px];
+    visibility: visible;
+  }
+}
+.nav {
+  @apply transition-[transform] duration-200;
+  &.animate {
+    transform: translateY(0);
+    top: 0;
+  }
+
+  &.stick {
+    transform: translateY(-100%);
+  }
+}
+
+.loading {
+  filter: blur(10px);
+  clip-path: inset(0);
+}
+
+.loaded {
+  filter: blur(0px);
+  transition: filter 0.5s linear;
+}
+
+.ripple {
+  background-position: center;
+  transition: background 0.3s;
+}
+
+.ripple:hover {
+  background-color: #cce9fa;
+  background: #cce9fa radial-gradient(circle, transparent 1%, #cce9fa 1%)
+    center/15000%;
+}
+
+.privacy-content {
+  h2 {
+    @apply text-2xl font-bold;
+  }
+
+  h3 {
+    @apply text-base font-bold;
+  }
+
+  a {
+    @apply relative inline-block;
+    &::before {
+      content: '';
+      @apply block absolute bottom-[-2px] left-0 w-[5%] border-b-[1px] border-b-neutral-silver transition-all duration-200;
+    }
+    &:hover {
+      &::before {
+        @apply w-[100%];
+      }
+    }
+  }
+  p, h1, h2, h3, h4, h5, h6 {
+    @apply pb-5;
+  }
+
+  ul {
+    @apply pl-10;
+    li {
+      list-style-type: disc;
+      @apply mb-3;
+    }
+  }
+  strong {
+    font-weight: bold;
+  }
+}

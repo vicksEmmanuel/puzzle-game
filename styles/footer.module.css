@@ -1,0 +1,25 @@
+.four-pointed-star {
+  @apply relative my-[1em] mx-auto w-[1em];
+  &_small {
+    @apply text-[0.25em];
+  }
+  &_medium {
+    @apply text-[0.5em];
+  }
+}
+
+.four-pointed-star {
+  &_small:before,
+  &_medium:before {
+    @apply absolute bg-white w-[1.18em] h-[1.34em] rotate-[-45deg] skew-x-[22.5deg] skew-y-[22.5deg];
+    content: '';
+  }
+}
+
+.four-pointed-star {
+  &_small:after,
+  &_medium:after {
+    @apply absolute bg-white w-[1.18em] h-[1.34em] rotate-[45deg] skew-x-[22.5deg] skew-y-[22.5deg];
+    content: '';
+  }
+}
