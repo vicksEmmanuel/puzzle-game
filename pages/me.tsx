@@ -45,7 +45,7 @@ const MyPuzzle = () => {
       <div className="w-screen bg-secondary-midnight">
         <div className="h-full">
           <Layout background={"bg-secondary-midnight"}>
-            <div className="px-5 w-screen h-screen absolute">
+            <div className="px-5 py-3 w-screen h-screen absolute">
               <div className="invisible sm:visible lg:visible md:visible xl:visible overflow-visible">
                 <div
                   className={`${styles["four-pointed-star_medium"]} motion-safe:animate-pulse absolute top-[110%] left-[10%]`}
