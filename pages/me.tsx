@@ -1,28 +1,34 @@
 import { useState } from "react";
+import { BsShare, BsTrash } from "react-icons/bs";
+import { FaPlus } from "react-icons/fa";
+import { useMutation, useQuery } from "react-query";
 import { toast } from "react-toastify";
-import { FaCopy, FaPlus } from "react-icons/fa";
 import WormHole from "../assets/icons/WormHole";
 import UserAddImage from "../components/Game/UserAddImage";
 import Layout from "../components/Layouts";
-import styles from "../styles/footer.module.css";
-import PuzzleMe from "../components/Game/PuzzleMe";
-import { useGraphql } from "../utils/hooks/useGraphql";
-import { useMutation, useQuery } from "react-query";
 import {
   Game_Insert_Input,
   Uuid_Comparison_Exp,
 } from "../modules/api/generated";
 import { useGeneralState } from "../state/useGeneralState";
-import { BsShare, BsTrash } from "react-icons/bs";
+import styles from "../styles/footer.module.css";
+import { useGraphql } from "../utils/hooks/useGraphql";
+import { useRouter } from "next/router";
 
 const MyPuzzle = () => {
   const [openPanel, setOpenPanel] = useState(false);
   const graphql = useGraphql();
+  const router = useRouter();
 
   const copyEmailToClipboard = (text: string) => {
-    navigator.clipboard.writeText(text).then(() => {
-      toast.success("Copied to clipboard");
-    });
+    navigator.clipboard
+      ?.writeText(text)
+      .then(() => {
+        toast.success("Copied to clipboard");
+      })
+      .catch(() => {
+        toast.error("Could not copy link");
+      });
   };
 
   const { setGameIds, gameIds, removeGameId } = useGeneralState();
@@ -95,7 +101,9 @@ const MyPuzzle = () => {
     img.src = image;
   };
 
-  const onPlay = () => {};
+  const onPlay = (id: string) => {
+    router.push(`/yy/${id}`);
+  };
   const onDelete = (id: string) => {
     removeGame.mutate({ _eq: id });
   };
@@ -206,7 +214,7 @@ const MyPuzzle = () => {
                   {games?.Game.map((i) => {
                     return (
                       <div
-                        onClick={onPlay}
+                        onClick={() => onPlay(i.id)}
                         className="w-[200px] h-[200px] bg-white z-20 rounded-xl flex items-center justify-center cursor-pointer mx-3 my-3 relative"
                       >
                         <img
