@@ -1,16 +1,62 @@
 import { useState } from "react";
-import { FaPlus } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { FaCopy, FaPlus } from "react-icons/fa";
 import WormHole from "../assets/icons/WormHole";
 import UserAddImage from "../components/Game/UserAddImage";
 import Layout from "../components/Layouts";
 import styles from "../styles/footer.module.css";
 import PuzzleMe from "../components/Game/PuzzleMe";
+import { useGraphql } from "../utils/hooks/useGraphql";
+import { useMutation, useQuery } from "react-query";
+import {
+  Game_Insert_Input,
+  Uuid_Comparison_Exp,
+} from "../modules/api/generated";
+import { useGeneralState } from "../state/useGeneralState";
+import { BsShare, BsTrash } from "react-icons/bs";
 
 const MyPuzzle = () => {
   const [openPanel, setOpenPanel] = useState(false);
+  const graphql = useGraphql();
 
+  const copyEmailToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      toast.success("Copied to clipboard");
+    });
+  };
+
+  const { setGameIds, gameIds, removeGameId } = useGeneralState();
+  const { refetch, data: games } = useQuery(["games"], () =>
+    graphql().Game({ gameId: { _in: gameIds } })
+  );
   const [splitNumber, setSplitNumber] = useState(5);
-  const [image, setImage] = useState<string[]>([]);
+
+  const addImage = useMutation(
+    (game: Game_Insert_Input) => {
+      return graphql().InsertOrUpdateGame({ game });
+    },
+    {
+      onSuccess: (e) => {
+        setGameIds(e.insert_Game?.returning?.[0]?.id);
+        refetch();
+        setOpenPanel(false);
+      },
+      onError: () => {},
+    }
+  );
+
+  const removeGame = useMutation(
+    (id: Uuid_Comparison_Exp) => {
+      return graphql().deleteGame({ id });
+    },
+    {
+      onSuccess: (e) => {
+        refetch();
+        removeGameId(e.delete_Game?.returning?.[0]?.id);
+      },
+      onError: () => {},
+    }
+  );
 
   const playGame = (image: string, level: number) => {
     var canvas = document.createElement("canvas"); // In memory canvas
@@ -21,6 +67,11 @@ const MyPuzzle = () => {
     function split_4(this: any) {
       var w2 = img.width / 2,
         h2 = img.height / 2;
+
+      canvas.height = 400;
+      canvas.width = 400;
+      ctx?.drawImage(this, 0, 0, 400, 400);
+      const imagePreview = canvas.toDataURL();
 
       for (var i = 0; i < level; i++) {
         var x = (-w2 * i) % (w2 * 2),
@@ -33,11 +84,25 @@ const MyPuzzle = () => {
         parts.push(canvas.toDataURL()); // ("image/jpeg") for jpeg
       }
 
-      setImage(parts);
+      addImage.mutate({
+        imageData: JSON.stringify(parts),
+        level: splitNumber,
+        imagePreview,
+      });
     }
 
     img.onload = split_4;
     img.src = image;
+  };
+
+  const onPlay = () => {};
+  const onDelete = (id: string) => {
+    removeGame.mutate({ _eq: id });
+  };
+  const onCopy = (id: string) => {
+    copyEmailToClipboard(
+      `https://harmonious-strudel-a24299.netlify.app/yy/${id}`
+    );
   };
 
   return (
@@ -112,36 +177,80 @@ const MyPuzzle = () => {
             </div>
 
             <div className="h-[15vh] w-screen" />
-
-            {image.length <= 0 && (
-              <>
-                <div
-                  className={`h-[80vh]  flex justify-center items-center bg-secondary-midnight text-white`}
-                  style={{ zIndex: 1000 }}
-                  onClick={() => setOpenPanel(true)}
-                >
-                  <div className="flex flex-col w-full px-8">
-                    <div className="w-[300px] h-[300px] bg-white opacity-[0.7] z-20 rounded-xl flex items-center justify-center cursor-pointer">
-                      <FaPlus color="grey" size={50} />
-                    </div>
-                  </div>
+            <>
+              <div
+                className={`h-[80vh] justify-center items-center bg-secondary-midnight text-white`}
+                style={{ zIndex: 1000 }}
+              >
+                <div className="mb-10 self-center text-center">
+                  {"You'd see your puzzle game files here"
+                    .split("")
+                    .map((i, idx) => (
+                      <span
+                        key={idx}
+                        className={`${styles.puzzle} char${idx} uppercase text-[20px]`}
+                      >
+                        {i}
+                      </span>
+                    ))}
                 </div>
 
-                <div className="h-[40vh] w-screen" />
+                <div className="flex flex-row w-full px-8 flex-wrap">
+                  <div
+                    onClick={() => setOpenPanel(true)}
+                    className="w-[200px] h-[200px] bg-white opacity-[0.7] z-20 rounded-xl flex items-center justify-center cursor-pointer mx-3 my-3"
+                  >
+                    <FaPlus color="grey" size={50} />
+                  </div>
 
-                <UserAddImage
-                  isOpen={openPanel}
-                  onClose={() => {
-                    setOpenPanel(false);
-                  }}
-                  onChange={(image, level) => {
-                    playGame(image, level);
-                  }}
-                />
-              </>
-            )}
+                  {games?.Game.map((i) => {
+                    return (
+                      <div
+                        onClick={onPlay}
+                        className="w-[200px] h-[200px] bg-white z-20 rounded-xl flex items-center justify-center cursor-pointer mx-3 my-3 relative"
+                      >
+                        <img
+                          src={i.imagePreview!}
+                          className="w-full h-full rounded-lg absolute"
+                        />
 
-            {image.length > 0 && <PuzzleMe images={image} level={3} />}
+                        <div className="flex flex-row relative self-end items-end w-full justify-end">
+                          <div
+                            className="bg-black  p-4"
+                            onClick={() => {
+                              onCopy(i.id);
+                            }}
+                          >
+                            <BsShare size={15} />
+                          </div>
+
+                          <div
+                            className="bg-black p-4"
+                            onClick={() => onDelete(i.id)}
+                          >
+                            <BsTrash size={15} />
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+
+              <div className="h-[40vh] w-screen" />
+
+              <UserAddImage
+                isOpen={openPanel}
+                onClose={() => {
+                  setOpenPanel(false);
+                }}
+                onChange={(image, level) => {
+                  playGame(image, level);
+                }}
+              />
+            </>
+
+            {/* {image.length > 0 && <PuzzleMe images={image} level={3} />} */}
           </Layout>
         </div>
       </div>

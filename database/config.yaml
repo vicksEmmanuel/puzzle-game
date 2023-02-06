@@ -1,0 +1,7 @@
+version: 3
+endpoint: https://worthy-bobcat-46.hasura.app
+metadata_directory: database/metadata
+admin_secret: 6VINCX0Q5Qqxyvb6JaFrzvtHzmOYs0ZFEIbdmvCSiIafBJ0Cvv6YSVQNAIWZZiPY
+actions:
+  kind: synchronous
+  handler_webhook_baseurl: https://worthy-bobcat-46.hasura.app

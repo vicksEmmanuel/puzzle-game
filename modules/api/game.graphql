@@ -1,0 +1,31 @@
+query Game($gameId: uuid_comparison_exp) {
+  Game(where: { id: $gameId }) {
+    id
+    imageData
+    imagePreview
+    level
+  }
+}
+
+mutation InsertOrUpdateGame($game: [Game_insert_input!]!) {
+  insert_Game(
+    objects: $game
+    on_conflict: { constraint: Game_pkey, update_columns: [imageData, level] }
+  ) {
+    returning {
+      id
+      imageData
+      imagePreview
+      level
+    }
+  }
+}
+
+mutation deleteGame($id: uuid_comparison_exp) {
+  delete_Game(where: { id: $id }) {
+    affected_rows
+    returning {
+      id
+    }
+  }
+}

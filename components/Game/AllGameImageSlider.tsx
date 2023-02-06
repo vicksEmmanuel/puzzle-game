@@ -1,10 +1,10 @@
-import { Tooltip } from '@chakra-ui/react';
-import Image from 'next/image';
-import { useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
-import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
-import { Swiper, SwiperSlide, useSwiper } from 'swiper/react';
-import 'swiper/css';
+import { Tooltip } from "@chakra-ui/react";
+import Image from "next/image";
+import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
+import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
+import "swiper/css";
 
 export interface AllGameImageSliderProps {
   images?: (string | undefined)[];
@@ -13,19 +13,14 @@ export interface AllGameImageSliderProps {
   randomSelector?: number;
 }
 
-const AllGameSlides = ({
-  images,
-  onChangeInc,
-  onChangeDec,
-  randomSelector,
-}: AllGameImageSliderProps) => {
+const AllGameSlides = ({ images }: AllGameImageSliderProps) => {
   return (
     <div className="flex flex-row">
-      <div className="w-[300px]">
+      <div className="w-[200px] ml-3 mt-4">
         <Swiper
           spaceBetween={200}
           slidesPerView={1}
-          width={100}
+          width={70}
           allowTouchMove={false}
           onSlideChange={(i) => console.log(i)}
           onSwiper={(swiper) => console.log(swiper)}
@@ -35,7 +30,7 @@ const AllGameSlides = ({
             return (
               <SwiperSlide key={idx}>
                 <Image
-                  alt={'images'}
+                  alt={"images"}
                   src={i as string}
                   width={100}
                   height={50}
@@ -72,7 +67,7 @@ const NextImage = ({
 
   return (
     <div style={{ zIndex: 3000000, marginLeft: 10 }}>
-      <Tooltip title={t('Change Image')}>
+      <Tooltip title={t("Change Image")}>
         <div className="flex flex-row">
           <div
             onClick={() => {
@@ -84,7 +79,7 @@ const NextImage = ({
             <BsArrowLeft
               size={12}
               data-testid="bsarrowupright"
-              color={'#fff'}
+              color={"#fff"}
             />
           </div>
 
@@ -98,7 +93,7 @@ const NextImage = ({
             <BsArrowRight
               size={12}
               data-testid="bsarrowupright"
-              color={'#fff'}
+              color={"#fff"}
             />
           </div>
         </div>

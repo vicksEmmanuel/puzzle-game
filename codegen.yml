@@ -1,0 +1,14 @@
+overwrite: true
+schema: https://worthy-bobcat-46.hasura.app/v1/graphql
+headers:
+  x-hasura-admin-secret: "6VINCX0Q5Qqxyvb6JaFrzvtHzmOYs0ZFEIbdmvCSiIafBJ0Cvv6YSVQNAIWZZiPY"
+documents: "./modules/api/**/*.graphql"
+generates:
+  modules/api/generated.ts:
+    plugins:
+      - "typescript"
+      - "typescript-operations"
+      - typescript-graphql-request
+  ./graphql.schema.json:
+    plugins:
+      - "introspection"

@@ -4,32 +4,32 @@
 
 @layer base {
   @font-face {
-    font-family: 'Poppins';
-    src: url('/fonts/poppins/Poppins-Regular.woff2') format('woff2');
+    font-family: "Poppins";
+    src: url("/fonts/poppins/Poppins-Regular.woff2") format("woff2");
     font-weight: 400;
     font-display: swap;
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'Poppins';
-    src: url('/fonts/poppins/Poppins-Italic.woff2') format('woff2');
+    font-family: "Poppins";
+    src: url("/fonts/poppins/Poppins-Italic.woff2") format("woff2");
     font-weight: 400;
     font-display: swap;
     font-style: italic;
   }
 
   @font-face {
-    font-family: 'Poppins';
-    src: url('/fonts/poppins/Poppins-Bold.woff2') format('woff2');
+    font-family: "Poppins";
+    src: url("/fonts/poppins/Poppins-Bold.woff2") format("woff2");
     font-weight: 700;
     font-display: swap;
     font-style: normal;
   }
 
   @font-face {
-    font-family: 'Poppins';
-    src: url('/fonts/poppins/Poppins-Bold-Italic.woff2') format('woff2');
+    font-family: "Poppins";
+    src: url("/fonts/poppins/Poppins-Bold-Italic.woff2") format("woff2");
     font-weight: 700;
     font-display: swap;
     font-style: italic;
@@ -180,7 +180,7 @@ li.navlink.active {
   a {
     @apply relative inline-block;
     &::before {
-      content: '';
+      content: "";
       @apply block absolute bottom-[-2px] left-0 w-[5%] border-b-[1px] border-b-neutral-silver transition-all duration-200;
     }
     &:hover {
@@ -189,7 +189,13 @@ li.navlink.active {
       }
     }
   }
-  p, h1, h2, h3, h4, h5, h6 {
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply pb-5;
   }
 

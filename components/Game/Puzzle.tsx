@@ -1,22 +1,22 @@
-import { random, sortBy } from 'lodash';
-import dynamic from 'next/dynamic';
-import Image from 'next/image';
-import { useEffect, useMemo, useRef, useState } from 'react';
-import Confetti from 'react-confetti';
-import useCountDown from 'react-countdown-hook';
-import { FaMinus, FaPlus } from 'react-icons/fa';
-import useWindowSize from 'react-use/lib/useWindowSize';
-import { useDebounce } from '../../utils/hooks/useDebounce';
-import CustomSwappable from './CustomSwappable';
-import GameFailureModal from './GameFailureModal';
-import HealthBar from './HealthBar';
-import gameAsset from './database';
+import { random, sortBy } from "lodash";
+import dynamic from "next/dynamic";
+import Image from "next/image";
+import { useEffect, useMemo, useRef, useState } from "react";
+import Confetti from "react-confetti";
+import useCountDown from "react-countdown-hook";
+import { FaMinus, FaPlus } from "react-icons/fa";
+import useWindowSize from "react-use/lib/useWindowSize";
+import { useDebounce } from "../../utils/hooks/useDebounce";
+import CustomSwappable from "./CustomSwappable";
+import GameFailureModal from "./GameFailureModal";
+import HealthBar from "./HealthBar";
+import gameAsset from "./database";
 
 const option = {
   ssr: false,
 };
 
-const AllGameImageSlider = dynamic(() => import('./AllGameImageSlider'), {
+const AllGameImageSlider = dynamic(() => import("./AllGameImageSlider"), {
   ...option,
 });
 
@@ -52,7 +52,7 @@ const Puzzle = () => {
     if (database[level].type.col > 3 || database[level].type.row >= 3) {
       return { width: 130, height: 130 };
     }
-    return { width: 200, height: 200 };
+    return { width: 110, height: 110 };
   }, [database[level], level]);
 
   const dimensions = useMemo(() => {
@@ -167,7 +167,7 @@ const Puzzle = () => {
 
       const tempPuzzleImageValue = Array.from(puzzleImageValue);
       const tempIndexHolder = tempPuzzleImageValue[lastIndexWithTheRightSort];
-      const sortedQuery = sortBy(tempPuzzleImageValue, 'key').reverse();
+      const sortedQuery = sortBy(tempPuzzleImageValue, "key").reverse();
 
       const valueOfKey = sortedQuery[lastIndexWithTheRightSort].key;
       const indexOfKey = tempPuzzleImageValue.findIndex(
@@ -197,7 +197,7 @@ const Puzzle = () => {
 
       const tempPuzzleImageValue = Array.from(puzzleImageValue);
       const tempIndexHolder = tempPuzzleImageValue[lastIndexWithTheRightSort];
-      const sortedQuery = sortBy(tempPuzzleImageValue, 'key');
+      const sortedQuery = sortBy(tempPuzzleImageValue, "key");
 
       const valueOfKey = sortedQuery[lastIndexWithTheRightSort].key;
       const indexOfKey = tempPuzzleImageValue.findIndex(
@@ -255,13 +255,13 @@ const Puzzle = () => {
   }, [level]);
 
   return (
-    <div>
-      <div className="flex-row flex items-center justify-between">
+    <div className="justify-center items-center flex flex-col">
+      <div className="flex-row flex items-center justify-between w-full">
         <div className="items-center w-[100px] flex flex-col justify-center">
           <div className="cursor-pointer" style={{ zIndex: 1000 }}>
-            <FaPlus size={30} />
+            <FaPlus size={20} />
           </div>
-          <div className="text-xl">Level {level + 1}</div>
+          <div className="text-sm">Level {level + 1}</div>
           <div
             onClick={() => {
               if (level - 1 < 0) return;
@@ -271,7 +271,7 @@ const Puzzle = () => {
             className="cursor-pointer"
             style={{ zIndex: 1000 }}
           >
-            <FaMinus size={30} />
+            <FaMinus size={20} />
           </div>
         </div>
 
@@ -304,22 +304,23 @@ const Puzzle = () => {
               goldenBuzzed={numberOfGoldenBuzzer}
             >
               <div
-                className={`relative rounded-md h-[${dimensions.height}px] mt-6 flex-wrap flex-row flex`}
-                style={{ width: dimensions.width }}
-                id={'swappable'}
+                className={`
+                relative rounded-md h-[${dimensions.height}px] w-[${dimensions.width}px] 
+                mt-6 flex-wrap flex-row flex items-center justify-center
+                `}
+                id={"swappable"}
               >
                 {Array.from(puzzleImageValue).map((val, idx) => (
                   <span
                     key={idx}
-                    className="block"
-                    style={{ width, height, borderWidth: 1 }}
+                    className={`block w-[${width}px] h-[${height}px]`}
+                    style={{ borderWidth: 1 }}
                     data-gridKey={val.key}
                   >
-                    <Image
+                    <img
                       alt={val.image}
                       src={val.image}
-                      width={width}
-                      height={height}
+                      className={`w-[110px] h-[110px]`}
                     />
                   </span>
                 ))}
@@ -334,15 +335,15 @@ const Puzzle = () => {
         ])}
       </div>
 
-      <div className="flex-row flex items-center justify-between mt-10">
+      <div className="flex-row flex items-center justify-between mt-10 w-full">
         <div className="items-center w-[30%] flex flex-col justify-center">
           {numberOfGoldenBuzzer > 0 && (
             <div
               onClick={goldenBuzzer}
-              className="cursor-pointer"
+              className="cursor-pointer text-md"
               style={{
                 zIndex: 1000,
-                backgroundColor: 'orange',
+                backgroundColor: "orange",
                 padding: 5,
                 borderRadius: 10,
                 paddingRight: 20,
@@ -358,7 +359,7 @@ const Puzzle = () => {
           {numberOfTimerLeft > 0 && (
             <div
               onClick={timerBuzzer}
-              className="cursor-pointer"
+              className="cursor-pointer text-md"
               style={{
                 zIndex: 1000,
                 padding: 5,
@@ -368,8 +369,8 @@ const Puzzle = () => {
               }}
             >
               <Image
-                src={'/assets/game/stopwatch.png'}
-                alt={'Stop Watch Bonus'}
+                src={"/assets/game/stopwatch.png"}
+                alt={"Stop Watch Bonus"}
                 width={30}
                 height={30}
               />
@@ -377,7 +378,6 @@ const Puzzle = () => {
             </div>
           )}
         </div>
-        <div className="items-center w-[40%] flex flex-col justify-center"></div>
       </div>
 
       {isSuccess && <Confetti width={confettiWidth} height={confettiHeight} />}
