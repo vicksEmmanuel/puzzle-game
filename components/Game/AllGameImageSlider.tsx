@@ -8,6 +8,9 @@ import "swiper/css";
 
 export interface AllGameImageSliderProps {
   images?: (string | undefined)[];
+}
+
+export interface NextImageProps {
   onChangeDec?(): number;
   onChangeInc?(): number;
   randomSelector?: number;
@@ -55,7 +58,7 @@ const NextImage = ({
   onChangeDec,
   onChangeInc,
   randomSelector,
-}: AllGameImageSliderProps) => {
+}: NextImageProps) => {
   const swiper = useSwiper();
   const { t } = useTranslation();
 

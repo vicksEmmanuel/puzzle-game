@@ -1,18 +1,18 @@
-import styles from "../../styles/footer.module.css";
+import { isUndefined } from "lodash";
 import { useRouter } from "next/router";
-import React, { useMemo } from "react";
-import WormHole from "../../assets/icons/WormHole";
-import Layout from "../../components/Layouts";
+import { useMemo } from "react";
 import { useQuery } from "react-query";
-import { useGraphql } from "../../utils/hooks/useGraphql";
-import { isEmpty, isUndefined } from "lodash";
+import WormHole from "../../assets/icons/WormHole";
 import PuzzleMe from "../../components/Game/PuzzleMe";
+import Layout from "../../components/Layouts";
+import styles from "../../styles/footer.module.css";
+import { useGraphql } from "../../utils/hooks/useGraphql";
 
 const UsersGame = () => {
   const router = useRouter();
-  const id = router.query?.id;
+  const id = router.query?.id as string;
   const graphql = useGraphql();
-  const { data, isLoading } = useQuery(
+  const { data } = useQuery(
     ["game", id],
     () => {
       return graphql().Game({ gameId: { _eq: id } });
@@ -22,18 +22,18 @@ const UsersGame = () => {
     }
   );
 
-  console.log(data);
-
-  const isEmptyGame = isUndefined(id) || (!isLoading && isEmpty(data?.Game));
-
-  const images = useMemo(() => {
+  const gameData = useMemo(() => {
     if (!data) return;
-    return JSON.parse(data.Game?.[0]?.imageData);
+
+    return {
+      image: JSON.parse(data.Game?.[0]?.imageData),
+      level: data?.Game?.[0]?.level,
+    };
   }, [data]);
 
   return (
     <div className="w-screen bg-secondary-midnight">
-      <div className="h-full">
+      <div className="h-screen">
         <Layout background={"bg-secondary-midnight"}>
           <div className="px-5 py-3 w-screen h-screen absolute">
             <div className="invisible sm:visible lg:visible md:visible xl:visible overflow-visible">
@@ -104,7 +104,13 @@ const UsersGame = () => {
           <div className="h-[15vh] w-screen" />
 
           <div className="justify-center items-center flex">
-            {!isUndefined(data) && <PuzzleMe images={images} level={3} />}
+            {!isUndefined(data) && (
+              <PuzzleMe
+                images={gameData?.image}
+                level={gameData?.level}
+                gameId={id}
+              />
+            )}
           </div>
         </Layout>
       </div>

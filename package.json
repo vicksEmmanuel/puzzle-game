@@ -19,6 +19,7 @@
     "database": "cd database && hasura console"
   },
   "dependencies": {
+    "@chakra-ui/hooks": "2.1.4",
     "@chakra-ui/react": "^2.4.3",
     "@emotion/react": "^11",
     "@emotion/styled": "^11",
@@ -33,6 +34,7 @@
     "autoprefixer": "^10.4.8",
     "babel-plugin-transform-remove-console": "^6.9.4",
     "formik": "^2.2.9",
+    "framer-motion": "8.4.0",
     "google-map-react": "^2.2.0",
     "graphql": "^16.5.0",
     "graphql-request": "^3.4.0",
@@ -46,6 +48,7 @@
     "loconative-scroll": "https://github.com/quentinhocde/loconative-scroll",
     "lodash": "^4.17.21",
     "mapbox-gl": "^2.10.0",
+    "net": "^1.0.2",
     "next": "12.2.4",
     "next-intercept-stdout": "^1.0.1",
     "next-transpile-modules": "^9.0.0",
@@ -77,19 +80,20 @@
     "sass": "^1.54.4",
     "sharp": "^0.30.7",
     "slick-carousel": "^1.8.1",
+    "socket.io": "^4.6.0",
+    "socket.io-client": "^4.6.0",
     "styled-components": "^5.3.6",
     "swiper": "^8.4.5",
     "tailwind-merge": "^1.6.0",
     "tailwindcss": "^3.1.8",
+    "tls": "^0.0.1",
     "typewriter-effect": "^2.19.0",
     "urql": "^2.2.3",
     "uuid": "^9.0.0",
     "webpack-node-externals": "^3.0.0",
     "yup": "^0.32.11",
     "zustand": "^3.5.1",
-    "zustand-persist": "^0.3.1",
-    "@chakra-ui/hooks": "2.1.4",
-    "framer-motion": "8.4.0"
+    "zustand-persist": "^0.3.1"
   },
   "devDependencies": {
     "@babel/core": "^7.18.10",
