@@ -1,5 +1,4 @@
 import { DragStartEvent } from "@shopify/draggable";
-import io from "Socket.IO-client";
 import { isEqual } from "lodash";
 import * as React from "react";
 import { useSwap } from "./use.swap";
@@ -81,20 +80,6 @@ const CustomSwappable = ({
           socket = channel;
         }
       });
-  };
-
-  const socketInitializer = async () => {
-    await fetch(`/api/socket?id=${gameId}`);
-    socket = io();
-
-    socket.on("connect", () => {
-      console.log("connected =====");
-    });
-
-    socket.on("update-game", (msg: any) => {
-      console.log("update-game =====", msg);
-      setPuzzleImageValue?.(msg);
-    });
   };
 
   const handleSwap = (e: DragStartEvent) => {
