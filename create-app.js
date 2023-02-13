@@ -352,7 +352,7 @@ const images = [
   "Gus",
 ];
 
-const space = `public/assets/game/col8row7`;
+const space = `public/assets/game/col6row6`;
 
 images.forEach((name, indx) => {
   fs.rename(
