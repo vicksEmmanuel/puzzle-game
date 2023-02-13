@@ -38,13 +38,13 @@ const Index = () => {
               <Button colorScheme="blue" onClick={onPlay}>
                 PLAY
               </Button>
-              <Button
+              {/* <Button
                 colorScheme="orange"
                 className="ml-4"
                 onClick={onCreatePlay}
               >
                 CREATE YOUR OWN PLAY
-              </Button>
+              </Button> */}
             </div>
           </div>
         </Layout>

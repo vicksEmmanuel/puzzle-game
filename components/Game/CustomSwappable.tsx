@@ -3,6 +3,7 @@ import io from "Socket.IO-client";
 import { isEqual } from "lodash";
 import * as React from "react";
 import { useSwap } from "./use.swap";
+import { createClient } from "@supabase/supabase-js";
 let socket: any;
 
 const CustomSwappable = ({
@@ -13,6 +14,7 @@ const CustomSwappable = ({
   goldenBuzzed,
   gameId,
   setPuzzleImageValue,
+  user,
 }: {
   children: JSX.Element;
   gridElements: ({ image: string; key: string } | any)[];
@@ -20,6 +22,7 @@ const CustomSwappable = ({
   rowLength: number;
   goldenBuzzed: any;
   gameId: string;
+  user: string;
   setPuzzleImageValue: any;
 }) => {
   const [elements, setElements] = React.useState(gridElements);
@@ -41,8 +44,44 @@ const CustomSwappable = ({
   }, [goldenBuzzed]);
 
   React.useEffect(() => {
-    socketInitializer();
+    // socketInitializer();
+    // superbaseInitializer();
   }, []);
+
+  const superbaseInitializer = () => {
+    const supabase = createClient(
+      "https://rqgaffnblqqeapouqkat.supabase.co",
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJxZ2FmZm5ibHFxZWFwb3Vxa2F0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE2NzYxNzIzNzUsImV4cCI6MTk5MTc0ODM3NX0.ymuFPcfE5Iljwb81qByBpWM7mRihWKNBvCZe6Su83Js",
+      {
+        realtime: {
+          params: {
+            eventsPerSecond: 10,
+          },
+        },
+      }
+    );
+
+    console.log(gameId, "===s=sss");
+
+    const channel = supabase.channel(gameId);
+
+    channel
+      .on("broadcast", { event: "game-change" }, ({ payload }: any) => {
+        const userWhoBroadcasted = payload?.user;
+        console.log(user, userWhoBroadcasted, " ====");
+        if (user !== userWhoBroadcasted) {
+          setPuzzleImageValue?.(payload?.result);
+        }
+      })
+      .on("presence", { event: "join" }, ({ key, newPresences }) => {
+        console.log(key, newPresences, "=w====ww");
+      })
+      .subscribe((status) => {
+        if (status === "SUBSCRIBED") {
+          socket = channel;
+        }
+      });
+  };
 
   const socketInitializer = async () => {
     await fetch(`/api/socket?id=${gameId}`);
@@ -96,8 +135,15 @@ const CustomSwappable = ({
 
     setElements(result);
 
-    console.log(result, "===== ");
-    socket?.emit("game-change", result);
+    // socket?.emit("game-change", result);
+    // socket?.send({
+    //   type: "broadcast",
+    //   event: "game-change",
+    //   payload: {
+    //     user,
+    //     result,
+    //   },
+    // });
 
     if (isSuccessful) {
       (ringer3Ref?.current as any)?.play();

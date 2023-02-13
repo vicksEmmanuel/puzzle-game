@@ -3,11 +3,12 @@ import Image from "next/image";
 import { useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import { BsArrowLeft, BsArrowRight } from "react-icons/bs";
-import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 import "swiper/css";
+import { Swiper, SwiperSlide, useSwiper } from "swiper/react";
 
 export interface AllGameImageSliderProps {
   images?: (string | undefined)[];
+  currentIndex: number;
 }
 
 export interface NextImageProps {
@@ -16,7 +17,7 @@ export interface NextImageProps {
   randomSelector?: number;
 }
 
-const AllGameSlides = ({ images }: AllGameImageSliderProps) => {
+const AllGameSlides = ({ images, currentIndex }: AllGameImageSliderProps) => {
   return (
     <div className="flex flex-row">
       <div className="w-[200px] ml-3 mt-4">
@@ -43,6 +44,8 @@ const AllGameSlides = ({ images }: AllGameImageSliderProps) => {
             );
           })}
 
+          <DynamicControl index={currentIndex} />
+
           {/* <NextImage
             onChangeInc={onChangeInc}
             onChangeDec={onChangeDec}
@@ -52,6 +55,20 @@ const AllGameSlides = ({ images }: AllGameImageSliderProps) => {
       </div>
     </div>
   );
+};
+
+const DynamicControl = ({ index }: { index: number }) => {
+  const swiper = useSwiper();
+
+  useEffect(() => {
+    if (swiper) {
+      setTimeout(() => {
+        swiper?.slideTo(index);
+      }, 1000);
+    }
+  }, [index]);
+
+  return <></>;
 };
 
 const NextImage = ({

@@ -6,7 +6,6 @@ import { FaMinus, FaPlus } from "react-icons/fa";
 import HealthBar from "./HealthBar";
 import PuzzleGame from "./PuzzleGame";
 import gameAsset from "./database";
-let socket: any;
 
 const option = {
   ssr: false,
@@ -20,7 +19,6 @@ function enumKeys<E>(e: E): (keyof E)[] {
   return Object.keys(e as any) as (keyof E)[];
 }
 const MAXIMAGES = 2;
-export const MAXGOLDENBUZZER = 10;
 
 const Puzzle = () => {
   const database = gameAsset;
@@ -147,7 +145,10 @@ const Puzzle = () => {
         </div>
 
         <div className="w-[100px]">
-          <AllGameImageSlider images={levelsInvolved.map((i) => i?.default)} />
+          <AllGameImageSlider
+            currentIndex={imageIndex}
+            images={levelsInvolved.map((i) => i?.default)}
+          />
         </div>
       </div>
 
@@ -158,7 +159,7 @@ const Puzzle = () => {
         height={height}
         width={width}
         healthBarPercentage={healthBarPercentage}
-        level={database[level]}
+        level={level}
         rowLength={database[level].type.row}
         setPuzzleImageValue={(e) => setPuzzleImageValue(e)}
         setLevel={setLevel}
@@ -167,6 +168,7 @@ const Puzzle = () => {
         start={start}
         timeLeft={timeLeft}
         isSuccess={isSuccess}
+        pause={pause}
         setSuccess={setSuccess}
       />
     </div>

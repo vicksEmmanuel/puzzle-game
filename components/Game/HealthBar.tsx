@@ -17,7 +17,7 @@ const HealthBar = ({ maxHp = 100, hp = 100 } = {}) => {
             right: 0,
             textAlign: "center",
           }}
-          className="text-sm items-center justify-center"
+          className="text-xs bottom-5 items-center justify-center"
         >
           {hp} / {maxHp}
         </div>

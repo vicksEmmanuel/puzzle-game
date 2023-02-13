@@ -81,6 +81,7 @@ export function useSwap(
         appendTo: selectors.container,
         constrainDimensions: true,
       },
+      distance: 15,
       plugins: [Plugins.ResizeMirror],
     });
     swappable.on("swappable:start", onSwappableStart);

@@ -1,3 +1,4 @@
+import { v4 as uuid } from "uuid";
 import { sortBy } from "lodash";
 import Image from "next/image";
 import {
@@ -31,10 +32,11 @@ export interface PuzzleGameProps {
   timeLeft: number;
   setSuccess: Dispatch<SetStateAction<boolean>>;
   isSuccess: boolean;
+  pause?(): void;
 }
 
 const MAXGAMELENGTH = 6;
-export const MAXGOLDENBUZZER = 10;
+export const MAXGOLDENBUZZER = 100;
 const MAXNUMBEROFTIMERBONUS = 3;
 
 const PuzzleGame = ({
@@ -53,9 +55,13 @@ const PuzzleGame = ({
   seconds,
   start,
   setSuccess,
+  pause,
   isSuccess,
 }: PuzzleGameProps) => {
   const { width: confettiWidth, height: confettiHeight } = useWindowSize();
+  const user = useMemo(() => {
+    return uuid();
+  }, []);
 
   const [numberOfTimerLeft, setNumberOfTimerLeft] = useState(
     MAXNUMBEROFTIMERBONUS
@@ -143,6 +149,7 @@ const PuzzleGame = ({
 
   useEffect(() => {
     if (isSuccess) {
+      pause?.();
       setTimeout(() => {
         setSuccess(false);
         if (level + 1 > MAXGAMELENGTH) return;
@@ -181,6 +188,7 @@ const PuzzleGame = ({
             <CustomSwappable
               gridElements={puzzleImageValue}
               rowLength={rowLength}
+              user={user}
               setPuzzleImageValue={setPuzzleImageValue}
               onSuccess={(isSuccessful) => {
                 setSuccess(isSuccessful);
