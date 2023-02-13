@@ -36,7 +36,7 @@ export interface PuzzleGameProps {
 }
 
 const MAXGAMELENGTH = 6;
-export const MAXGOLDENBUZZER = 100;
+export const MAXGOLDENBUZZER = 30;
 const MAXNUMBEROFTIMERBONUS = 3;
 
 const PuzzleGame = ({
