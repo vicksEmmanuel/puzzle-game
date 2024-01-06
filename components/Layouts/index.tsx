@@ -1,6 +1,3 @@
-import gsap from "gsap";
-import { ScrollSmoother } from "gsap/ScrollSmoother";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import React from "react";
 import { ParallaxProvider } from "react-scroll-parallax";
 
@@ -12,7 +9,6 @@ const Layout = ({
   children,
   background,
 }: React.PropsWithChildren<LayoutProps>): JSX.Element => {
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother);
 
   const value = (
     <ParallaxProvider>
